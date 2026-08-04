@@ -1,0 +1,6 @@
+requests
+loguru
+websockets
+msgpack
+blackboxprotobuf
+typing_extensions
