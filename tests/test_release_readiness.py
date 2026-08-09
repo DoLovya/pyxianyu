@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 from pyxianyu.apis.auth_api import AuthApi
 from pyxianyu.core.exceptions import XianyuApiError
-from pyxianyu.goofish_apis import XianyuApis
+from pyxianyu.xianyu_apis import XianyuApis
 
 
 class ReleaseReadinessTest(unittest.TestCase):

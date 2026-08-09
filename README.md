@@ -54,9 +54,9 @@ pyxianyu/
 │       │   └── types.py
 │       ├── utils/
 │       │   ├── __init__.py
-│       │   └── goofish_utils.py
-│       ├── goofish_live.py
-│       └── goofish_apis.py
+│       │   └── xianyu_utils.py
+│       ├── xianyu_live.py
+│       └── xianyu_apis.py
 ├── docs/                # API 接口分析文档
 ├── tests/
 │   └── test_smoke.py
@@ -83,7 +83,7 @@ pyxianyu/
 | 商品管理 | 获取商品列表、商品下架、商品编辑详情、商品重新上架、全新发布 |
 | 媒体上传 | 上传图片并发送 |
 
-`pyxianyu.goofish_apis.XianyuApis` 暴露的主要方法：
+`pyxianyu.xianyu_apis.XianyuApis` 暴露的主要方法：
 
 | 方法 | 说明 |
 | --- | --- |
@@ -107,7 +107,7 @@ pyxianyu/
 
 ## 已知限制
 
-- `pyxianyu.goofish_live` 是消息收发核心模块，需由上层服务调度，不宜直接嵌入阻塞主循环
+- `pyxianyu.xianyu_live` 是消息收发核心模块，需由上层服务调度，不宜直接嵌入阻塞主循环
 - 未内置扫码登录能力，需依赖已登录态 Cookie
 - `prepublish_check`、`preget` 等预置原语保留为底层调用，未做进一步封装，可按需组合
 - `reshelf_item`、`edit_item`、`publish_item` 均走 PC 端发布/编辑链路；闲鱼对虚拟商品的 PC 端发布有管控，可能返回 `FAIL_BIZ_PC_NOT_SUPPORT_PUBLISH_OR_EDIT`
@@ -178,15 +178,15 @@ docker build -t pyxianyu .
 docker run -it pyxianyu
 ```
 
-默认入口为 `python -m pyxianyu.goofish_live`，启动后进入消息监听与收发模式。
+默认入口为 `python -m pyxianyu.xianyu_live`，启动后进入消息监听与收发模式。
 
 ### 4. 导入示例
 
 ```python
 from pyxianyu.core import XianyuClient
 from pyxianyu.apis import AuthApi, ItemApi
-from pyxianyu.goofish_apis import XianyuApis
-from pyxianyu.utils.goofish_utils import trans_cookies, generate_device_id
+from pyxianyu.xianyu_apis import XianyuApis
+from pyxianyu.utils.xianyu_utils import trans_cookies, generate_device_id
 ```
 
 ## 发布到 PyPI（Trusted Publishing）

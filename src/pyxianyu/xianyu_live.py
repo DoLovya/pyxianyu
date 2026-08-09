@@ -8,9 +8,9 @@ import time
 import websockets
 from loguru import logger
 
-from .goofish_apis import XianyuApis
+from .xianyu_apis import XianyuApis
 from .message import Message, make_image, make_text
-from .utils.goofish_utils import (
+from .utils.xianyu_utils import (
     decrypt,
     generate_device_id,
     generate_mid,
@@ -320,4 +320,3 @@ class XianyuLive:
                 await self.send_msg(websocket, cid, send_user_id, make_text(reply))
             except Exception:
                 pass
-

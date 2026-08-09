@@ -3,7 +3,7 @@ import time
 import requests
 
 from .exceptions import XianyuApiError, XianyuConfigError, XianyuRequestError, XianyuResponseError
-from ..utils.goofish_utils import generate_sign
+from ..utils.xianyu_utils import generate_sign
 
 
 DEFAULT_USER_AGENT = (
@@ -161,4 +161,3 @@ class XianyuClient:
                         name=cookie.name,
                     )
                     break
-

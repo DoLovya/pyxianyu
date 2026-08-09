@@ -4,6 +4,8 @@ from importlib.metadata import PackageNotFoundError, version
 
 from .apis import AuthApi, ItemApi, MediaApi, SearchApi, UserApi
 from .core import XianyuClient
+from .xianyu_apis import XianyuApis
+from .xianyu_live import XianyuLive
 
 try:
     __version__ = version("pyxianyu")
@@ -18,5 +20,6 @@ __all__ = [
     "SearchApi",
     "UserApi",
     "XianyuClient",
+    "XianyuApis",
+    "XianyuLive",
 ]
-

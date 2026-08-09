@@ -10,8 +10,8 @@ class SmokeTest(unittest.TestCase):
     def test_submodules(self):
         import pyxianyu.apis
         import pyxianyu.core
-        import pyxianyu.goofish_apis
-        import pyxianyu.goofish_live
+        import pyxianyu.xianyu_apis
+        import pyxianyu.xianyu_live
         import pyxianyu.message
         import pyxianyu.utils
 
@@ -21,4 +21,3 @@ class SmokeTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

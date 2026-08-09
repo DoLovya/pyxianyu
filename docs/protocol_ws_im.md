@@ -2,7 +2,7 @@
 
 ## 目的
 
-整理 `pyxianyu.goofish_live`（源码位于 `src/pyxianyu/goofish_live.py`）所实现的闲鱼 WebSocket 私信协议形态，便于：
+整理 `pyxianyu.xianyu_live`（源码位于 `src/pyxianyu/xianyu_live.py`）所实现的闲鱼 WebSocket 私信协议形态，便于：
 
 - 理解消息实时收发的整体流程
 - 快速扩展更多 lwp 路由（例如更多会话能力、已读回执等）
@@ -11,7 +11,7 @@
 ## 取证来源
 
 - 闲鱼 Web 端私信页面抓包与行为观察
-- 本仓库实现：`third_party/pyxianyu/src/pyxianyu/goofish_live.py`
+- 本仓库实现：`third_party/pyxianyu/src/pyxianyu/xianyu_live.py`
 
 ## 连接信息
 
@@ -161,7 +161,7 @@ WebSocket 消息均为 JSON 文本，常见字段：
 
 README 中提到“base64 + Protobuf”，但当前实现中对私信内容主要是 base64 的 JSON payload。若后续出现 Protobuf 帧/加密 payload，可优先在：
 
-- `src/pyxianyu/utils/goofish_utils.py`
+- `src/pyxianyu/utils/xianyu_utils.py`
 - `src/pyxianyu/message/types.py`
 
 补齐更底层的帧结构与解析逻辑。

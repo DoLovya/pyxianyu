@@ -5,7 +5,7 @@ description = "闲鱼底层 HTTP / WebSocket 能力库"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
-keywords = ["xianyu", "goofish", "mcp", "websocket", "automation"]
+keywords = ["xianyu", "xianyu-sdk", "mcp", "websocket", "automation"]
 classifiers = [
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
