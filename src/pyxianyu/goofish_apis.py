@@ -1,4 +1,4 @@
-from .apis import AuthApi, ItemApi, MediaApi, SearchApi
+from .apis import AuthApi, ItemApi, MediaApi, SearchApi, UserApi
 from .core import XianyuClient
 
 
@@ -11,6 +11,7 @@ class XianyuApis:
         self.item_detail_url = self.client.item_detail_url
         self.item_search_url = self.client.item_search_url
         self.user_items_url = self.client.user_items_url
+        self.user_page_nav_url = self.client.user_page_nav_url
         self.item_downshelf_url = self.client.item_downshelf_url
         self.item_prepublish_check_url = self.client.item_prepublish_check_url
         self.item_preget_url = self.client.item_preget_url
@@ -24,6 +25,7 @@ class XianyuApis:
         self.item_api = ItemApi(self.client)
         self.media_api = MediaApi(self.client)
         self.search_api = SearchApi(self.client)
+        self.user_api = UserApi(self.client)
 
     def get_token(self):
         return self.auth_api.get_token()
@@ -77,6 +79,9 @@ class XianyuApis:
     def get_all_user_items(self, user_id, page_size=20):
         return self.item_api.get_all_user_items(user_id=user_id, page_size=page_size)
 
+    def get_user_page_nav(self):
+        return self.user_api.get_user_page_nav()
+
     def downshelf_item(self, item_id):
         return self.item_api.downshelf_item(item_id)
 
@@ -109,4 +114,3 @@ class XianyuApis:
 
     def reshelf_item(self, item_id, source_id=None):
         return self.item_api.reshelf_item(item_id, source_id=source_id)
-

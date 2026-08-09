@@ -4,7 +4,10 @@ version = "0.1.0"
 description = "闲鱼底层 HTTP / WebSocket 能力库"
 readme = "README.md"
 requires-python = ">=3.9"
+license = { text = "MIT" }
+keywords = ["xianyu", "goofish", "mcp", "websocket", "automation"]
 classifiers = [
+  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.9",
@@ -23,6 +26,11 @@ dependencies = [
   "blackboxprotobuf>=1.0.1",
   "typing-extensions>=4.0.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/DoLovya/pyxianyu"
+Repository = "https://github.com/DoLovya/pyxianyu"
+Issues = "https://github.com/DoLovya/pyxianyu/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pyxianyu"]
