@@ -12,7 +12,7 @@
 
 - 浏览器网络抓包（`https://www.goofish.com/`）
 - 前端资源与接口形态（h5api 网关）
-- 本仓库现有 `third_party/pyxianyu/core/client.py` 的实现与已有 API 文档
+- 本仓库现有 `third_party/pyxianyu/src/pyxianyu/core/client.py` 的实现与已有 API 文档
 
 ## 基本形态
 
@@ -151,6 +151,6 @@ MTop 响应通常形态：
 
 ## 在 pyxianyu 中的实现映射
 
-- 请求参数与签名：`third_party/pyxianyu/core/client.py`
-- 接口封装：`third_party/pyxianyu/apis/*.py`
+- 请求参数与签名：`third_party/pyxianyu/src/pyxianyu/core/client.py`
+- 接口封装：`third_party/pyxianyu/src/pyxianyu/apis/*.py`
 - API 记录与取证：`third_party/pyxianyu/docs/*.md`

@@ -83,5 +83,5 @@ data={}
 
 ## 当前在仓库中的用途
 
-- `third_party/pyxianyu/apis/user_api.py`：封装该接口并返回原始响应
+- `third_party/pyxianyu/src/pyxianyu/apis/user_api.py`：封装该接口并返回原始响应
 - `xianyu-mcp-server`：通过 `get_my_profile` 工具对外暴露（结构化 `profile` + 原始 `raw`）

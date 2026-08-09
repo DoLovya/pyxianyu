@@ -43,7 +43,7 @@
 
 - 先确保 HTTP 的 `get_token()` 返回成功
 - 检查网络是否允许访问 `wss://wss-goofish.dingtalk.com/`
-- 对照 `goofish_live.py` 的 headers 形态补齐
+- 对照 `src/pyxianyu/goofish_live.py` 的 headers 形态补齐
 
 ## 图片上传返回 `TYPE_NOT_CONFIRMED`
 

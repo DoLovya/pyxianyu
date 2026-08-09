@@ -34,13 +34,13 @@
 
 ### 3. 加 URL 常量（如需要）
 
-如果是一个新 URL（不是复用既有网关），在 `core/client.py` 初始化里加入：
+如果是一个新 URL（不是复用既有网关），在 `src/pyxianyu/core/client.py` 初始化里加入：
 
 - `self.<xxx>_url = "https://h5api.m.goofish.com/h5/<api>/<v>/"`
 
 ### 4. 增加 API 封装
 
-在 `apis/` 增加/扩展一个 `*_api.py`：
+在 `src/pyxianyu/apis/` 增加/扩展一个 `*_api.py`：
 
 - 调用 `client.build_mtop_params(api=..., ...)`
 - 调用 `client.post_json(url, params=params, data_val="<json string>")`

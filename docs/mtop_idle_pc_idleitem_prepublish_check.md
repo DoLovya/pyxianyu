@@ -56,5 +56,5 @@ https://h5api.m.goofish.com/h5/mtop.idle.pc.idleitem.prepublish.check/1.0/
 
 ## 当前在仓库中的用途
 
-- `third_party/XianYuApis/apis/item_api.py`：预检查接口封装
-- `third_party/XianYuApis/goofish_apis.py`：统一 API 聚合入口
+- `third_party/pyxianyu/src/pyxianyu/apis/item_api.py`：预检查接口封装
+- `third_party/pyxianyu/src/pyxianyu/goofish_apis.py`：统一 API 聚合入口

@@ -112,7 +112,7 @@ https://h5api.m.goofish.com/h5/mtop.idle.pc.idleitem.editDetail/1.0/
 
 ## 当前在仓库中的用途
 
-- `third_party/XianYuApis/apis/item_api.py`：底层 `editDetail` 封装
-- `third_party/XianYuApis/goofish_apis.py`：统一 API 聚合入口
+- `third_party/pyxianyu/src/pyxianyu/apis/item_api.py`：底层 `editDetail` 封装
+- `third_party/pyxianyu/src/pyxianyu/goofish_apis.py`：统一 API 聚合入口
 - `.mcp/XianYuApis_MCP/tools/xianyu_api_tools.py`：提供 `get_item_edit_detail`
 - `.mcp/XianYuApis_MCP/server.py`：对外暴露 `get_item_edit_detail` MCP 工具

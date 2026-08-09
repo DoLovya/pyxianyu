@@ -118,7 +118,7 @@ data=<JSON 字符串>
 
 ## 当前在仓库中的用途
 
-- `third_party/XianYuApis/apis/item_api.py`：底层下架接口封装
-- `third_party/XianYuApis/goofish_apis.py`：统一 API 聚合入口
+- `third_party/pyxianyu/src/pyxianyu/apis/item_api.py`：底层下架接口封装
+- `third_party/pyxianyu/src/pyxianyu/goofish_apis.py`：统一 API 聚合入口
 - `.mcp/XianYuApis_MCP/tools/xianyu_api_tools.py`：MCP 工具聚合
 - `.mcp/XianYuApis_MCP/server.py`：对外暴露 `downshelf_item` 工具
