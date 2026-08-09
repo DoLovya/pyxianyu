@@ -14,6 +14,7 @@
 - [功能特性](#功能特性)
 - [已知限制](#已知限制)
 - [环境要求](#环境要求)
+- [兼容性与支持声明](#兼容性与支持声明)
 - [快速开始](#快速开始)
 - [相关文档](#相关文档)
 - [许可](#许可)
@@ -114,6 +115,14 @@ pyxianyu/
 
 - Python 3.9+
 - 依赖：`requests`、`loguru`、`websockets`、`msgpack`、`blackboxprotobuf`、`typing_extensions`
+
+## 兼容性与支持声明
+
+- CPython 3.9~3.13：正式支持；CI 持续执行安装、导入、编译与最小单测
+- PyPy 3.10：实验性支持；CI 持续执行构建后安装的 smoke 校验（build + import + compile + unittest）
+- 当前不提供 PyPy 专用发布流程；由于 `pyxianyu` 为纯 Python 包，继续沿用同一套 sdist / wheel 分发产物
+
+只有当上述 CI 校验持续通过时，README 与包元数据才保留 PyPy 支持声明；若后续依赖升级导致 PyPy 校验失败，应先回退声明或修复兼容性，再继续发布。
 
 ## 快速开始
 

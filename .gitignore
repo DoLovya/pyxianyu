@@ -25,7 +25,8 @@ MANIFEST
 local_settings.py
 db.sqlite3
 __pypackages__/
-.venv
+.venv/
+.venv-*/
 env/
 venv/
 ENV/
