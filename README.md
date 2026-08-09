@@ -17,6 +17,7 @@
 - [兼容性与支持声明](#兼容性与支持声明)
 - [快速开始](#快速开始)
 - [相关文档](#相关文档)
+- [鸣谢](#鸣谢)
 - [许可](#许可)
 - [免责声明](#免责声明)
 
@@ -210,6 +211,10 @@ from pyxianyu.utils.goofish_utils import trans_cookies, generate_device_id
 - 商品编辑详情接口记录：[`./docs/mtop_idle_pc_idleitem_edit_detail.md`](./docs/mtop_idle_pc_idleitem_edit_detail.md)
 - 商品编辑重发布接口记录：[`./docs/mtop_idle_pc_idleitem_edit.md`](./docs/mtop_idle_pc_idleitem_edit.md)
 - 用户个人页接口记录：[`./docs/mtop_idle_web_user_page_nav.md`](./docs/mtop_idle_web_user_page_nav.md)
+
+## 鸣谢
+
+感谢 [cv-cat/XianYuApis](https://github.com/cv-cat/XianYuApis) 项目提供的研究思路与资料参考，对本项目的接口分析与能力整理有所帮助。
 
 ## 许可
 
