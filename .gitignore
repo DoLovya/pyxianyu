@@ -35,3 +35,9 @@ venv.bak/
 test.py
 test1.py
 test2.py
+
+# 本地临时脚本
+test*.py
+
+# 本地文稿草稿
+docs/drafts/
