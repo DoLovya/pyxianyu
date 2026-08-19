@@ -47,7 +47,8 @@ def generate_uuid():
 
 
 def generate_device_id(user_id):
-    return f"{uuid.uuid4()}-{user_id}"
+    digest = hashlib.md5(str(user_id).encode("utf-8")).hexdigest()
+    return f"{digest[:8]}-{digest[8:12]}-{digest[12:16]}-{digest[16:20]}-{digest[20:]}-{user_id}"
 
 
 _SIGN_SALT = "34839810"

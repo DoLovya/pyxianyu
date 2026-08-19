@@ -5,7 +5,7 @@ class AuthApi:
     def __init__(self, client):
         self.client = client
 
-    def get_token(self, *, max_attempts=3):
+    def get_token(self, *, max_attempts=1):
         api_name = "mtop.taobao.idlemessage.pc.login.token"
         max_attempts = max(1, int(max_attempts))
         last_result = None
@@ -25,8 +25,8 @@ class AuthApi:
                 self.client.login_url,
                 params=params,
                 data_val=data_val,
-                headers=self.client.build_json_headers(include_host=True),
-                verify=False,
+                headers=self.client.build_json_headers(),
+                verify=None,
             )
             self.client.clear_conflicting_cookies(response)
             result = self.client.parse_json_response(response, api_name=api_name)

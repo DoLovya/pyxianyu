@@ -63,7 +63,7 @@ class XianyuClient:
         return {
             "jsv": "2.7.2",
             "appKey": "34839810",
-            "t": str(int(time.time()) * 1000),
+            "t": str(int(time.time() * 1000)),
             "sign": "",
             "v": v,
             "type": "originaljson",
