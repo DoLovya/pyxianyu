@@ -75,12 +75,15 @@ pyxianyu/
 | HTTP API | 闲鱼所有 HTTP 接口（sign 签名已解密） |
 | WebSocket | 私信实时收发（sign + base64 + Protobuf 协议） |
 | 消息类型 | 文字、图片消息 |
-| 会话管理 | 获取全部历史聊天记录 |
-| 主动发送 | 主动向指定用户发消息 |
+| 消息撤回 | 撤回 2 分钟内自己发送的消息（支持频率限制指数退避） |
+| 会话管理 | 获取最近会话列表（分页）、指定会话历史消息 |
+| 主动发送 | 主动向指定用户发消息，返回含 messageId 的 `SentMessageReceipt` 用于撤回 |
 | Token 维持 | 自动刷新登录态，常驻进程不掉线 |
-| 获取聊天记录 | 获取与指定用户的历史消息记录 |
+| 商品搜索 | 按关键词搜索闲鱼商品（支持分页、排序） |
 | 商品信息 | 获取商品详情 |
-| 商品管理 | 获取商品列表、商品下架、商品编辑详情、商品重新上架、全新发布 |
+| 商品管理 | 获取商品列表、商品擦亮（每日一次）、商品下架、编辑详情、重新上架、全新发布 |
+| 交易下单 | 普通商品下单（`place_order`，含验货宝自动回退）、验货宝全链路下单（`place_order_yhb`） |
+| 验货宝 | 地址查询 + 验货宝渲染 + 验货宝下单三步组合封装 |
 | 媒体上传 | 上传图片并发送 |
 
 `pyxianyu.xianyu_apis.XianyuApis` 暴露的主要方法：
@@ -90,8 +93,10 @@ pyxianyu/
 | `get_token()` | 校验登录态并换取 `accessToken` |
 | `refresh_token()` | 刷新当前登录态 |
 | `get_item_info(item_id)` | 获取商品详情 |
+| `search_items(keyword, *, page_number=1, rows_per_page=20, ...)` | 按关键词搜索闲鱼商品（PC Web 搜索接口） |
 | `get_user_items(user_id, ...)` | 获取指定用户某一页商品 |
 | `get_all_user_items(user_id, page_size=20)` | 自动翻页聚合当前用户全部商品 |
+| `polish_item(item_id)` | 擦亮/重新上架在售商品（每商品每天 1 次；`IDLEITEM_POLISH_AGAIN` 视为幂等成功） |
 | `downshelf_item(item_id)` | 下架指定商品 |
 | `prepublish_check(item_id=None)` | 调用发布前校验接口 |
 | `preget(item_id=None, source_id=None, publish_scene=None, bizcode=None)` | 获取发布/编辑链路所需预置信息 |
@@ -102,6 +107,23 @@ pyxianyu/
 | `publish_item(payload)` | 直接发布全新商品（PC 端发布链路） |
 | `upload_media(media_path)` | 上传图片素材 |
 | `get_user_page_nav()` | 获取当前登录用户的个人信息/个人页导航数据 |
+| `get_address_list()` | 拉取当前账号已保存的收货地址列表（验货宝链路前置） |
+| `order_render(item_id)` | 普通商品下单预览（`trade.order.render`） |
+| `order_create(item_buy_info)` | 普通商品正式下单（`trade.order.create`） |
+| `place_order(item_id)` | **普通下单组合封装**：`order_render → order_create`；若返回 `yhb_required` 自动衔接 `place_order_yhb`，最终返回六态 status |
+| `yhb_order_render(item_id)` | 验货宝下单渲染（best-effort 兜底 `yhbVersion=3, buyQuantity=1`） |
+| `yhb_order_create(item_id, buyer_address_id, *, buy_quantity=1, yhb_version=3)` | 验货宝正式下单 |
+| `place_order_yhb(item_id, *, buyer_address_id=None)` | **验货宝全链路组合**：`get_address_list → yhb_order_render → yhb_order_create`（可手动传入地址跳过选地址） |
+
+`pyxianyu.xianyu_live.XianyuLive`（WebSocket IM 层）暴露的关键能力：
+
+| 方法 / 类型 | 说明 |
+| --- | --- |
+| `async send_msg(ws, cid, toid, message) -> SentMessageReceipt` | 发送一条私信；返回结构化的 `SentMessageReceipt`（含 `messageId: str`、`sent_at: datetime` 等字段），供后续 `recall_message` 使用 |
+| `async send_msg_once(toid, item_id, message)` | 一步版：内部建立 WS → 登录 → `send_msg` → 关闭；用于短调用 MCP 场景 |
+| `async recall_message(ws, message_id) -> RecallResult` | 撤回 2 分钟内自己发送的消息；命中频率限制（400600001）时自动指数退避重试 |
+| `async list_all_conversations(cid) -> list[dict]` | 拉取指定会话的历史消息（按时间升序） |
+| `async list_newest(page_size: int)` | 拉取最近会话列表（WS `/r/Conversation/listNewest` 路由） |
 
 对应接口分析文档已整理在 `docs/` 目录，方便继续扩展发布类能力。
 
