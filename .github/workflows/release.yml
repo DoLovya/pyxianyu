@@ -53,10 +53,40 @@ jobs:
       - name: Validate distributions
         run: |
           python -m twine check dist/*
-      - name: Install wheel and run smoke checks
+      - name: Install wheel and smoke test (end-user mode)
         run: |
-          python -m pip install dist/*.whl
-            python -c "import pyxianyu; import pyxianyu.apis; import pyxianyu.core; import pyxianyu.xianyu_apis; print(pyxianyu.__version__)"
-          python -m unittest discover -s tests -v
+          python -m venv /tmp/pyxianyu-smoke
+          /tmp/pyxianyu-smoke/bin/pip install --upgrade pip
+          /tmp/pyxianyu-smoke/bin/pip install dist/*.whl
+          echo "--- full import smoke ---"
+          /tmp/pyxianyu-smoke/bin/python -c "
+            import pyxianyu
+            from pyxianyu import (
+                __version__,
+                AuthApi, ItemApi, MediaApi, SearchApi, UserApi,
+                XianyuClient, XianyuApis, XianyuLive,
+            )
+            import pyxianyu.apis
+            import pyxianyu.core
+            import pyxianyu.core.exceptions
+            import pyxianyu.utils
+            import pyxianyu.message
+            import pyxianyu.xianyu_apis
+            import pyxianyu.xianyu_live
+            expected = '${{ env.TAG }}'.lstrip('v')
+            assert __version__ == expected, f'version mismatch: {__version__} vs tag {expected}'
+            print('all imports ok, version:', __version__)
+          "
+          echo "--- compile check installed package ---"
+          SITE_PKGS=$(/tmp/pyxianyu-smoke/bin/python -c "import pyxianyu, os; print(os.path.dirname(pyxianyu.__file__))")
+          /tmp/pyxianyu-smoke/bin/python -m compileall -q "$SITE_PKGS"
+          echo "--- entrypoint / module __all__ check ---"
+          /tmp/pyxianyu-smoke/bin/python -c "
+            import pyxianyu
+            for name in pyxianyu.__all__:
+                assert hasattr(pyxianyu, name), f'__all__ mentions {name!r} but missing from package'
+            print('__all__ exports:', pyxianyu.__all__)
+          "
+          echo "wheel install smoke: OK"
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
