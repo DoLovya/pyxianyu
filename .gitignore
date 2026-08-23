@@ -41,3 +41,9 @@ test*.py
 
 # 本地文稿草稿
 docs/drafts/
+
+# 本地环境变量（安全关键，禁止提交）
+.env
+.env.local
+.env.*.local
+!*.example

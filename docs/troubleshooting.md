@@ -53,3 +53,26 @@
 
 - 确认上传的是图片格式（jpg/png/webp 等）
 - 确认文件扩展名与文件头匹配
+
+## Smoke Harness（`scripts/smoke_1_0.py`）常见 FAQ
+
+### 1. 为什么很多用例显示 SKIP？
+Harness 使用「显式 opt-in」策略。缺任一关键 env（如 `XY_COOKIE_STR`/`XY_TEST_ITEM_ID`/`XY_RUN_ORDER_TESTS=1`/`XY_RUN_LIVE_TESTS=1`）就会标记 SKIP，避免无凭证时触发 FAIL。
+解决方式：复制 `scripts/smoke_env.example` 为 `.env.local` 并按需填写。
+
+### 2. WS 用例默认不跑（提示需要 `XY_RUN_LIVE_TESTS=1`）
+WS smoke 会发起公网连接（`wss://wss-goofish.dingtalk.com`），CI 与本地默认都关闭。需要调试 IM 链路时请手动设置 `XY_RUN_LIVE_TESTS=1`。
+
+### 3. `place_order` 返回 `status=failed` 或 `status=yhb_required`，为什么仍然 PASS？
+Harness 的目标是**验证调用面不抛异常 + 返回结构合法**，而不是保证下单成功。否则反复跑 harness 会产生大量真实未付款订单，也会因商品是验货宝专属而误报。
+
+判定通过的三条规则：
+1. 不抛未捕获异常；
+2. 返回对象含 `status` 字段且值 ∈ `{success, yhb_required, account_invalid, failed}`；
+3. 若 `status=success`，`order_id` 不能是空字符串。
+
+需要对真实下单成功率做监控时，请在上层业务做专门的冒烟任务，不要用 Harness。
+
+### 4. 遇到 IM 流控错误码 `400600001`，Harness 怎么判？
+- HTTP 域（polish/order）可通过 `XY_HTTP_RETRY=2` 自动重试 2 次（指数退避 1s/2s）；
+- WS 域的会话列表或心跳返回 400600001，则当前 WS case 会记为 **SKIP** 而非 FAIL，避免 CI 偶发抖动。

@@ -189,6 +189,38 @@ from pyxianyu.xianyu_apis import XianyuApis
 from pyxianyu.utils.xianyu_utils import trans_cookies, generate_device_id
 ```
 
+## 冒烟基线（Smoke Harness）
+
+`scripts/smoke_1_0.py` 是一套面向 **pyxianyu 1.x** 的端到端冒烟回归脚本，覆盖 6 个用例：`get_token`、`search_items`、`get_user_items`、`polish_item`、`place_order`、`ws_list_all_conversations`。
+
+- 采用「可选真实账号 + 可选 mock」策略：未设置 `XY_COOKIE_STR` 时自动进入 mock 模式，保证空环境也能跑通全部 shape 校验；
+- **写操作默认不启**：`place_order` 需要两层 opt-in（`XY_TEST_ORDER_ITEM_ID` + `XY_RUN_ORDER_TESTS=1`），WS 需要 `XY_RUN_LIVE_TESTS=1`，避免误下订单 / 误连公网；
+- 输出三色汇总（`✅ PASS / ⏭ SKIP / ❌ FAIL`）+ 可选 `--json` 机器报告，可直接接入 CI。
+
+常用命令：
+
+```bash
+# 1. 复制环境变量模板，填入真实 Cookie / 商品 ID
+cp scripts/smoke_env.example .env.local
+$EDITOR .env.local
+
+# 2. 空环境也能跑（mock 模式，HTTP 域 shape 校验）
+python scripts/smoke_1_0.py
+
+# 3. 仅跑指定用例
+python scripts/smoke_1_0.py --case polish_item,place_order
+
+# 4. 仅 HTTP 域，写 JSON 报告
+python scripts/smoke_1_0.py --only-http --json report.json
+
+# 5. 需要调试 IM 链路时，显式开 WS（.env.local 里 XY_RUN_LIVE_TESTS=1）
+python scripts/smoke_1_0.py --only-ws
+```
+
+退出码约定：`0`（全 PASS 或 SKIP）/ `2`（存在 FAIL）/ `3`（参数错误）。
+
+更多 Harness 常见问题与判定规则（例如 `place_order` 为什么 `status=failed` 也算 PASS），见 [`docs/troubleshooting.md`](./docs/troubleshooting.md) 的「Smoke Harness FAQ」章节。
+
 ## 发布到 PyPI（Trusted Publishing）
 
 1. 在 PyPI 创建项目 `pyxianyu`
