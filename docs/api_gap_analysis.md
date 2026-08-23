@@ -184,7 +184,8 @@ ret[0] 同 §3.2 的 YHB 标志            →  若 create 阶段才返回验货
 | **功能用途** | 查询账号已配置的所有收货地址，用于验货宝下单时确定 `buyerAddressId`。 |
 | **取证来源** | `common/services/xianyu_order_client.py::XianyuOrderClient._get_default_address_id()` |
 | **建议实现位置** | 新建 `apis/trade_api.py::TradeApi.get_address_list()`（验货宝链路前置） |
-| **验证状态** | ⏳ 待验证 |
+| **实现状态** | ✅ 已实现（`apis/trade_api.py::TradeApi.get_address_list / yhb_order_render / yhb_order_create / place_order_yhb` + 门面 XianyuApis，2026-08-23）。实现细节参见 [mtop_taobao_idle_logistic_address_list_query.md](file:///Users/huan.zhang/Code/xianyu-code/xianyu-mcp-server/third_party/pyxianyu/docs/mtop_taobao_idle_logistic_address_list_query.md)。配套验货宝链路见 [mtop_alibaba_idle_pc_yhb_order_create_render.md](file:///Users/huan.zhang/Code/xianyu-code/xianyu-mcp-server/third_party/pyxianyu/docs/mtop_alibaba_idle_pc_yhb_order_create_render.md)、[mtop_alibaba_idle_pc_yhb_order_create.md](file:///Users/huan.zhang/Code/xianyu-code/xianyu-mcp-server/third_party/pyxianyu/docs/mtop_alibaba_idle_pc_yhb_order_create.md)。 |
+| **验证状态** | ✅ 已验证（单测 tests/test_trade_yhb.py 16 条 + 三件套全绿；mock post_json 不发起真实网络） |
 
 #### 请求参数
 
@@ -220,7 +221,8 @@ data.data.addressList: [
 | **功能用途** | 验货宝专用链路第 2 步：校验商品可买并拿到 `yhbVersion`（验货宝协议版本）和 `buyQuantity`（购买数量）。失败时可用默认值（`yhbVersion=3, buyQuantity=1`）兜底。 |
 | **取证来源** | `common/services/xianyu_order_client.py::XianyuOrderClient.yhb_render()` |
 | **建议实现位置** | 新建 `apis/trade_api.py::TradeApi.yhb_order_render()` |
-| **验证状态** | ⏳ 待验证 |
+| **实现状态** | ✅ 已实现（2026-08-23）。Best-effort：非账号失效类错误用 `yhb_version=3, buy_quantity=1` 默认值兜底（不抛）。实现细节参见 [mtop_alibaba_idle_pc_yhb_order_create_render.md](file:///Users/huan.zhang/Code/xianyu-code/xianyu-mcp-server/third_party/pyxianyu/docs/mtop_alibaba_idle_pc_yhb_order_create_render.md)。 |
+| **验证状态** | ✅ 已验证（单测 3 条；三件套全绿） |
 
 #### 请求参数
 
@@ -251,7 +253,8 @@ data.yhbConfirmBuy.buyQuantity      →  1，购买数量（闲鱼一般为 1 �
 | **功能用途** | 验货宝专用链路第 3 步：创建真实订单（拍下）。与普通链路相同，**会生成真实订单**。 |
 | **取证来源** | `common/services/xianyu_order_client.py::XianyuOrderClient.yhb_create()` |
 | **建议实现位置** | 新建 `apis/trade_api.py::TradeApi.yhb_order_create()` |
-| **验证状态** | ⏳ 待验证 |
+| **实现状态** | ✅ 已实现（2026-08-23）。`optionalPromotionIdValueList` / `channelData` 内部紧凑序列化；组合封装 `place_order_yhb` 自动 address→render→create；`place_order(item_id)` 普通命中验货宝时自动回退 `place_order_yhb`，最终 `status` 新增 `yhb_success / yhb_failed`。实现细节参见 [mtop_alibaba_idle_pc_yhb_order_create.md](file:///Users/huan.zhang/Code/xianyu-code/xianyu-mcp-server/third_party/pyxianyu/docs/mtop_alibaba_idle_pc_yhb_order_create.md)。 |
+| **验证状态** | ✅ 已验证（单测 16 条；三件套全绿；6 字段 data_val 紧凑 JSON 断言；place_order 六态枚举覆盖） |
 
 #### 请求参数
 

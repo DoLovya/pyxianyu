@@ -20,6 +20,9 @@ class XianyuApis:
         self.item_polish_url = self.client.item_polish_url
         self.order_render_url = self.client.order_render_url
         self.order_create_url = self.client.order_create_url
+        self.address_list_url = self.client.address_list_url
+        self.yhb_order_render_url = self.client.yhb_order_render_url
+        self.yhb_order_create_url = self.client.yhb_order_create_url
         self.reset_login_info_url = self.client.reset_login_info_url
         self.session = self.client.session
         self.device_id = device_id
@@ -121,6 +124,23 @@ class XianyuApis:
 
     def polish_item(self, item_id):
         return self.item_api.polish_item(item_id)
+
+    def get_address_list(self):
+        return self.trade_api.get_address_list()
+
+    def yhb_order_render(self, item_id):
+        return self.trade_api.yhb_order_render(item_id)
+
+    def yhb_order_create(self, item_id, buyer_address_id, *, buy_quantity=1, yhb_version=3):
+        return self.trade_api.yhb_order_create(
+            item_id,
+            buyer_address_id,
+            buy_quantity=buy_quantity,
+            yhb_version=yhb_version,
+        )
+
+    def place_order_yhb(self, item_id, *, buyer_address_id=None):
+        return self.trade_api.place_order_yhb(item_id, buyer_address_id=buyer_address_id)
 
     def order_render(self, item_id):
         return self.trade_api.order_render(item_id)
