@@ -1,4 +1,4 @@
-from .apis import AuthApi, ItemApi, MediaApi, SearchApi, UserApi
+from .apis import AuthApi, ItemApi, MediaApi, SearchApi, TradeApi, UserApi
 from .core import XianyuClient
 
 
@@ -17,6 +17,9 @@ class XianyuApis:
         self.item_preget_url = self.client.item_preget_url
         self.item_edit_detail_url = self.client.item_edit_detail_url
         self.item_edit_url = self.client.item_edit_url
+        self.item_polish_url = self.client.item_polish_url
+        self.order_render_url = self.client.order_render_url
+        self.order_create_url = self.client.order_create_url
         self.reset_login_info_url = self.client.reset_login_info_url
         self.session = self.client.session
         self.device_id = device_id
@@ -25,6 +28,7 @@ class XianyuApis:
         self.item_api = ItemApi(self.client)
         self.media_api = MediaApi(self.client)
         self.search_api = SearchApi(self.client)
+        self.trade_api = TradeApi(self.client)
         self.user_api = UserApi(self.client)
 
     def get_token(self):
@@ -114,3 +118,15 @@ class XianyuApis:
 
     def reshelf_item(self, item_id, source_id=None):
         return self.item_api.reshelf_item(item_id, source_id=source_id)
+
+    def polish_item(self, item_id):
+        return self.item_api.polish_item(item_id)
+
+    def order_render(self, item_id):
+        return self.trade_api.order_render(item_id)
+
+    def order_create(self, item_buy_info):
+        return self.trade_api.order_create(item_buy_info)
+
+    def place_order(self, item_id):
+        return self.trade_api.place_order(item_id)

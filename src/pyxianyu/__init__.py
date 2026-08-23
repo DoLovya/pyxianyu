@@ -2,8 +2,16 @@ from __future__ import annotations
 
 from importlib.metadata import PackageNotFoundError, version
 
-from .apis import AuthApi, ItemApi, MediaApi, SearchApi, UserApi
-from .core import XianyuClient
+from .apis import AuthApi, ItemApi, MediaApi, SearchApi, TradeApi, UserApi
+from .core import (
+    XianyuApiError,
+    XianyuClient,
+    XianyuConfigError,
+    XianyuError,
+    XianyuRequestError,
+    XianyuResponseError,
+    XianyuYhbRequiredError,
+)
 from .xianyu_apis import XianyuApis
 from .xianyu_live import XianyuLive
 
@@ -18,8 +26,15 @@ __all__ = [
     "ItemApi",
     "MediaApi",
     "SearchApi",
+    "TradeApi",
     "UserApi",
+    "XianyuApiError",
     "XianyuClient",
+    "XianyuConfigError",
+    "XianyuError",
+    "XianyuRequestError",
+    "XianyuResponseError",
+    "XianyuYhbRequiredError",
     "XianyuApis",
     "XianyuLive",
 ]

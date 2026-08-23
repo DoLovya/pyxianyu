@@ -32,6 +32,9 @@ class XianyuClient:
         )
         self.item_edit_url = "https://h5api.m.goofish.com/h5/mtop.idle.pc.idleitem.edit/1.0/"
         self.item_publish_url = "https://h5api.m.goofish.com/h5/mtop.idle.pc.idleitem.publish/1.0/"
+        self.item_polish_url = "https://h5api.m.goofish.com/h5/mtop.taobao.idle.item.polish/2.0/"
+        self.order_render_url = "https://h5api.m.goofish.com/h5/mtop.taobao.idle.trade.order.render/7.0/"
+        self.order_create_url = "https://h5api.m.goofish.com/h5/mtop.taobao.idle.trade.order.create/5.0/"
         self.reset_login_info_url = "https://passport.goofish.com/newlogin/hasLogin.do"
         self.session = requests.Session()
         self.session.cookies.update(cookies)

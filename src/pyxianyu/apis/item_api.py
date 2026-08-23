@@ -1,10 +1,81 @@
 import json
 import uuid
 
+from ..core import XianyuApiError
+
+
+_POLISH_DUPLICATE_MARKERS = ("IDLEITEM_POLISH_AGAIN", "宝贝已经擦亮过了", "一天只能擦亮一次")
+
 
 class ItemApi:
     def __init__(self, client):
         self.client = client
+
+    @staticmethod
+    def _contains_any(text, markers):
+        if not text:
+            return False
+        return any(marker in text for marker in markers)
+
+    def polish_item(self, item_id):
+        """
+        擦亮单个商品，每日多次调用幂等（视为成功）。
+
+        返回结构：
+        {
+            "success": bool,
+            "already_polished": bool,  # True 表示今日已擦亮过（幂等成功）
+            "api": "mtop.taobao.idle.item.polish",
+            "itemId": str,
+            "ret": list,
+            "data": dict,
+        }
+        """
+        api_name = "mtop.taobao.idle.item.polish"
+        params = self.client.build_mtop_params(
+            api=api_name,
+            spm_cnt="a21ybx.item.0.0",
+            spm_pre="a21ybx.personal.feeds.1.42f86ac21eZ9zd",
+            log_id="42f86ac21eZ9zd",
+            v="2.0",
+        )
+        data_val = json.dumps({"itemId": str(item_id)}, ensure_ascii=False, separators=(",", ":"))
+
+        try:
+            response = self.client.post_json(
+                self.client.item_polish_url,
+                params=params,
+                data_val=data_val,
+            )
+            result = self.client.parse_json_response(response, api_name=api_name)
+            ensured = self.client.ensure_api_success(result, api_name=api_name)
+            already_polished = False
+            ret_list = ensured.get("ret") or []
+            for entry in ret_list:
+                if self._contains_any(entry, _POLISH_DUPLICATE_MARKERS):
+                    already_polished = True
+                    break
+            return {
+                "success": True,
+                "already_polished": already_polished,
+                "api": api_name,
+                "itemId": str(item_id),
+                "ret": ret_list,
+                "data": ensured.get("data") or {},
+            }
+        except XianyuApiError as exc:
+            ret_list = exc.ret or []
+            first_ret = ret_list[0] if ret_list else str(exc)
+            if self._contains_any(first_ret, _POLISH_DUPLICATE_MARKERS):
+                return {
+                    "success": True,
+                    "already_polished": True,
+                    "api": api_name,
+                    "itemId": str(item_id),
+                    "ret": ret_list,
+                    "data": (exc.payload or {}).get("data") or {},
+                }
+            raise
 
     def get_item_info(self, item_id):
         api_name = "mtop.taobao.idle.pc.detail"

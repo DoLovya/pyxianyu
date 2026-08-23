@@ -5,6 +5,7 @@ from .exceptions import (
     XianyuError,
     XianyuRequestError,
     XianyuResponseError,
+    XianyuYhbRequiredError,
 )
 
 __all__ = [
@@ -14,5 +15,6 @@ __all__ = [
     "XianyuError",
     "XianyuRequestError",
     "XianyuResponseError",
+    "XianyuYhbRequiredError",
 ]
 
