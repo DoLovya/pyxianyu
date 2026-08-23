@@ -357,7 +357,8 @@ data.yhbConfirmBuy.buyQuantity      →  1，购买数量（闲鱼一般为 1 �
 | **功能用途** | 撤回一条自己在 2 分钟内发送的消息。 |
 | **取证来源** | `backend-web/app/services/chat_new/im_client.py::GoofishImClient.recall_message()` + `send_text_message()` 返回 `messageId` 的解析逻辑 |
 | **建议实现位置** | `xianyu_live.py::XianyuLive.recall_message(message_id)`（新增）。同时需修改 `send_msg()` 的返回值，额外返回 `messageId` 和 `uuid`（当前只返回原始响应）。 |
-| **验证状态** | ⏳ 待验证 |
+| **实现状态** | ✅ 已实现（`xianyu_live.py::XianyuLive.recall_message` + `send_msg` 返回 `SentMessageReceipt`，2026-08-23）。实现细节参见 [protocol_ws_im_recall.md](file:///Users/huan.zhang/Code/xianyu-code/xianyu-mcp-server/third_party/pyxianyu/docs/protocol_ws_im_recall.md)。 |
+| **验证状态** | ✅ 已验证（单测 12 条全绿 + mock smoke shape 校验；4 条 messageId 解析顺序、5 种 recall 状态、400600001 指数退避）。 |
 
 #### 请求 body 结构
 

@@ -1,0 +1,5 @@
+schema: spec-driven
+id: pyxianyu-im-recall-message
+name: pyxianyu IM 撤回消息 + send_msg 返回 messageId
+status: proposed
+created: 2026-08-23
